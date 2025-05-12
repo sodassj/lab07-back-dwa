@@ -6,15 +6,29 @@ const User = require("../models/User");
 
 // Registro
 router.post("/register", async (req, res) => {
-  const { username, password, role } = req.body;
-  const existingUser = await User.findOne({ username });
-  if (existingUser) return res.status(400).json({ message: "Usuario ya existe" });
+  console.log("📥 Se recibió una solicitud POST en /register");
+  try {
+    const { username, password, role } = req.body;
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = new User({ username, password: hashedPassword, role });
-  await newUser.save();
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: "Usuario ya existe" });
+    }
 
-  res.json({ message: "Usuario registrado con éxito" });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, password: hashedPassword, role });
+
+    await newUser.save();
+
+    // Envío opcional para saber que funcionó
+    res.json({ success: true, message: "Usuario registrado con éxito" });
+
+  } catch (error) {
+    console.error("❌ Error al registrar usuario:");
+    console.error("Mensaje:", error.message);
+    console.error("Stack:", error.stack);
+    res.status(500).json({ message: "Error interno del servidor" });
+}
 });
 
 // Login
