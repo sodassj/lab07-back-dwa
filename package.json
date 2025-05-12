@@ -8,5 +8,6 @@
     "jwt-decode": "^4.0.0",
     "mongodb": "^6.16.0",
     "mongoose": "^8.14.1"
-  }
+  },
+  "license": "MIT"
 }
