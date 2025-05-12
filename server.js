@@ -13,6 +13,11 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("Conectado a MongoDB"))
   .catch(err => console.error("Error al conectar a MongoDB:", err));
 
+// Rutas básicas
+app.get("/", (req, res) => {
+  res.send("¡Bienvenido a la API del Backend!");
+});
+
 const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
 
